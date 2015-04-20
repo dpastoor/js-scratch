@@ -1,5 +1,5 @@
 var sArray = ["hello", "there", "you"];
 
-sArray.forEach(function(element, index,array) {
-  console.log(element);
+sArray.forEach(function anon(element, index,array) {
+  console.log(index + ":" + element);
 });
