@@ -24,3 +24,12 @@ var objArray = {
 };
 
 objArray.log();
+
+var objArray2 = {
+  arr:["hello", "there", "you"],
+  log: function() {
+    for (var i=0; i < this.arr.length; i++) {
+          console.log("in obj: " + i + ":" + this.arr[i]);
+      }
+  }
+};
