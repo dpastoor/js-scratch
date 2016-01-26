@@ -1,18 +1,26 @@
 /**
  * Created by devin on 1/26/16.
  */
-var Promise = require('bluebird');
-var fs = Promise.promisifyAll(require('fs')); // adds Async() versions that return promises
-var path = require('path');
-var _ = require('lodash');
+let Promise = require('bluebird');
+let fs = Promise.promisifyAll(require('fs')); // adds Async() versions that return promises
+let path = require('path');
+let _ = require('lodash');
 //
 ///** Returns the number of files in the given directory. */
-var countFiles = async function(dir) {
-  var files = await fs.readdirAsync(dir);
+let countFiles = async function(dir) {
+  let files = await fs.readdirAsync(dir);
   console.log(files);
-  var paths = _.map(files, (file) => path.join(dir, file));
+  let paths = _.map(files, (file) => path.join(dir, file));
   console.log(paths);
-  var stats = _.map(paths, (path) => fs.statAsync(path).then(res => res.isFile())); // parallel!
+  let stats = _.map(paths, (path) => {
+      console.log('promise for async: ' + path)
+      return fs.statAsync(path).then(res => {
+        console.log('got result for ' + path);
+        return res.isFile()
+      })
+    }); // parallel!
+
+  // this is the same as doing Promise.all
   let results = await* stats;
   return _.filter(results, (res) => res).length;
 }
