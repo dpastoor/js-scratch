@@ -9,13 +9,12 @@ var _ = require('lodash');
 ///** Returns the number of files in the given directory. */
 var countFiles = async function(dir) {
   var files = await fs.readdirAsync(dir);
-  console.log(files)
-  var paths = _.map(files, function (file) { return path.join(dir, file); });
-  console.log(paths)
-  var stats = _.map(paths, function (path) { return fs.statAsync(path).then(res => res.isFile()) }); // parallel!
+  console.log(files);
+  var paths = _.map(files, (file) => path.join(dir, file));
+  console.log(paths);
+  var stats = _.map(paths, (path) => fs.statAsync(path).then(res => res.isFile())); // parallel!
   let results = await* stats;
-  return _.filter(results, (res) => res).length
-  //return _.filter(stats, function (stat) { return stat.isFile(); }).length;
+  return _.filter(results, (res) => res).length;
 }
 //
 // Give it a spin
