@@ -9,18 +9,9 @@ let _ = require('lodash');
 ///** Returns the number of files in the given directory. */
 let countFiles = async function(dir) {
   let files = await fs.readdirAsync(dir);
-  console.log(files);
   let paths = _.map(files, (file) => path.join(dir, file));
-  console.log(paths);
-  let stats = _.map(paths, (path) => {
-      console.log('promise for async: ' + path)
-      return fs.statAsync(path).then(res => {
-        console.log('got result for ' + path);
-        return res.isFile()
-      })
-    }); // parallel!
-
-  // this is the same as doing Promise.all
+  let stats = _.map(paths, (path) => fs.statAsync(path).then(res => res.isFile())); // parallel!
+  //same as Promise.all
   let results = await* stats;
   return _.filter(results, (res) => res).length;
 }
